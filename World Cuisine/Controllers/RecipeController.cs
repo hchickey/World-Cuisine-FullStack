@@ -26,8 +26,15 @@ namespace World_Cuisine.Controllers
         [HttpPost]
         public IActionResult Recipe(Recipe recipe)
         {
+
+            if(string.IsNullOrWhiteSpace(recipe.ImageUrl))
+            {
+                recipe.ImageUrl = null;
+            }
+
             _recipeRepo.AddRecipe(recipe);
-            return CreatedAtAction("Get", new {id = recipe.Id}, recipe);
+
+            return NoContent();
         }
     }
 }
