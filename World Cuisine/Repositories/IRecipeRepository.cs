@@ -6,5 +6,6 @@ namespace World_Cuisine.Repositories
     public interface IRecipeRepository
     {
         List<Recipe> GetAll();
+        void AddRecipe(Recipe recipe);
     }
 }

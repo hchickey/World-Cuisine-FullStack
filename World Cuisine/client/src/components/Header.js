@@ -29,6 +29,9 @@ export const Header = ({ isLoggedIn }) => {
                                         Home
                                     </NavLink>
                                 </NavItem>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/recipe">Recipes</NavLink>
+                                </NavItem>
                             </>
                         }
                     </Nav>

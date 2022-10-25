@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using World_Cuisine.Models;
 
-
 namespace World_Cuisine.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
@@ -17,7 +16,7 @@ namespace World_Cuisine.Repositories
                 {
                     cmd.CommandText = @"
                                 SELECT Id, FirebaseUserId, FirstName, LastName, Email
-                                FROM User
+                                FROM [User] 
                                 WHERE FirebaseUserId = @FirebaseUserId";
 
                     cmd.Parameters.AddWithValue("@FirebaseUserId", firebaseUserId);

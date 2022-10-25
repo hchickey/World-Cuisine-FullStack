@@ -19,9 +19,9 @@ namespace World_Cuisine.Repositories
                 {
                     cmd.CommandText = @"
                                 SELECT r.Id AS RecipeId, r.Name, r.Description, r.ImageUrl, r.UserId,
-                                       r.Ingredient, r.Instruction, u.FirstName, u.LastName
+                                       r.Ingredient, r.Instruction, u.FirstName, u.LastName, u.Id AS UserId
                                 FROM Recipe r
-                                LEFT JOIN User u ON u.Id = r.UserId";
+                                LEFT JOIN [User] u ON u.Id = r.UserId";
 
                     var recipes = new List<Recipe>();
 
@@ -38,7 +38,7 @@ namespace World_Cuisine.Repositories
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                             User = new User()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName"))
                             }
@@ -52,6 +52,29 @@ namespace World_Cuisine.Repositories
                         recipes.Add(recipe);
                     }
                     return recipes;
+                }
+            }
+        }
+
+        public void AddRecipe(Recipe recipe)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            INSERT INTO Recipe (Name, Description, ImageUrl, UserId, Ingredient, Instruction)
+                            OUTPUT INSERTED.ID
+                            VALUES (@Name, @Description, @ImageUrl, @UserId, @Ingredient, @Instruction)";
+                    cmd.Parameters.AddWithValue("@Name", recipe.Name);
+                    cmd.Parameters.AddWithValue("@Description", recipe.Description);
+                    cmd.Parameters.AddWithValue("@ImageUrl", recipe.ImageUrl == null ? DBNull.Value : recipe.ImageUrl);
+                    cmd.Parameters.AddWithValue("@UserId", recipe.UserId);
+                    cmd.Parameters.AddWithValue("@Ingredient", recipe.Ingredient);
+                    cmd.Parameters.AddWithValue("@Instruction", recipe.Instruction);
+
+                    recipe.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
