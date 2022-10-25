@@ -22,5 +22,12 @@ namespace World_Cuisine.Controllers
             List<Recipe> recipes = _recipeRepo.GetAll();
             return Ok(recipes);
         }
+
+        [HttpPost]
+        public IActionResult Recipe(Recipe recipe)
+        {
+            _recipeRepo.AddRecipe(recipe);
+            return CreatedAtAction("Get", new {id = recipe.Id}, recipe);
+        }
     }
 }

@@ -24,12 +24,10 @@ function App() {
 
 
   return (
-    <div className="App">
-      <Router>
-        <Header isLoggedIn={isLoggedIn} />
-        <ApplicationViews isLoggedIn={isLoggedIn} />
-      </Router>
-    </div>
+    <Router>
+      <Header isLoggedIn={isLoggedIn} />
+      <ApplicationViews isLoggedIn={isLoggedIn} />
+    </Router>
   );
 }
 

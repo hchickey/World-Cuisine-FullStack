@@ -13,7 +13,7 @@ export default function Login() {
     const loginSubmit = (e) => {
         e.preventDefault();
         login(email, password)
-            .then(() => navigate("/"))
+            .then(() => navigate("/recipe"))
             .catch(() => alert("Invalid email or password"));
     };
 
