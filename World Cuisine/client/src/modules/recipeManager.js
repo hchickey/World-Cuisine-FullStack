@@ -23,22 +23,11 @@ export const getAllRecipes = () => {
 };
 
 export const addRecipe = (recipe) => {
-    return getToken().then((token) => {
-        return fetch(baseUrl, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "applications/json",
-            },
-            body: JSON.stringify(recipe),
-        }).then((resp) => {
-            if (resp.status === 401) {
-                throw new Error("Unauthorized");
-            } else if (!resp.ok) {
-                throw new Error(
-                    "An unknown error occurred while trying to save a new post.",
-                );
-            }
-        });
+    return fetch(baseUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipe),
     });
 };
