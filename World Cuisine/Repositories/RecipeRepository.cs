@@ -56,6 +56,48 @@ namespace World_Cuisine.Repositories
             }
         }
 
+        public Recipe GetRecipeById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            SELECT Id, Name, Description, ImageUrl, UserId,
+                            Ingredient, Instruction
+                            FROM Recipe
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Recipe recipe = null;
+
+                    if(reader.Read())
+                    {
+                        recipe = new Recipe()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Description = reader.GetString(reader.GetOrdinal("Description")),
+                            UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                            Ingredient = reader.GetString(reader.GetOrdinal("Ingredient")),
+                            Instruction = reader.GetString(reader.GetOrdinal("Instruction"))
+                        };
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("ImageUrl")))
+                        {
+                            recipe.ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"));
+                        }
+                    }
+
+                    reader.Close();
+                    return recipe;
+                }
+            }
+        }
+
         public void AddRecipe(Recipe recipe)
         {
             using (var conn = Connection)
@@ -75,6 +117,34 @@ namespace World_Cuisine.Repositories
                     cmd.Parameters.AddWithValue("@Instruction", recipe.Instruction);
 
                     recipe.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void UpdateRecipe(Recipe recipe)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Recipe
+                            SET Name = @Name,
+                                Description = @Description,
+                                ImageUrl = @ImageUrl,
+                                Ingredient = @Ingredient,
+                                Instruction = @Instruction
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", recipe.Id);
+                    cmd.Parameters.AddWithValue("@Name", recipe.Name);
+                    cmd.Parameters.AddWithValue("@Description", recipe.Description);
+                    cmd.Parameters.AddWithValue("@ImageUrl", recipe.ImageUrl);
+                    cmd.Parameters.AddWithValue("@Ingredient", recipe.Ingredient);
+                    cmd.Parameters.AddWithValue("@Instruction", recipe.Instruction);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
