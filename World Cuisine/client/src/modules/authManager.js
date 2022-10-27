@@ -13,7 +13,7 @@ const _doesUserExist = (firebaseUserId) => {
         }).then(resp => resp.ok));
 };
 
-const _saveUser = (user) => {
+const _saveUser = (userUser) => {
     return getToken().then((token) =>
         fetch(_apiUrl, {
             method: "POST",
@@ -21,7 +21,7 @@ const _saveUser = (user) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(userUser)
         }).then(resp => resp.json()));
 };
 
@@ -47,10 +47,10 @@ export const logout = () => {
     firebase.auth().signOut()
 };
 
-export const register = (user, password) => {
-    return firebase.auth().createUserWithEmailAndPassword(user.email, password)
+export const register = (userUser, password) => {
+    return firebase.auth().createUserWithEmailAndPassword(userUser.email, password)
         .then((createResponse) => _saveUser({
-            ...user,
+            ...userUser,
             firebaseUserId: createResponse.user.uid
         }));
 };

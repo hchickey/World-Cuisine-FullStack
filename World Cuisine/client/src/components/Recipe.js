@@ -1,7 +1,15 @@
-import { Card, CardBody } from "reactstrap"
-
+import { Card, CardBody, Button } from "reactstrap"
+import { useNavigate } from "react-router-dom"
 
 export const Recipe = ({ recipe }) => {
+
+    const navigate = useNavigate()
+
+    const editClick = (e) => {
+        e.preventDefault()
+        navigate(`/recipe/edit/${recipe.id}`)
+    }
+
     return (
         <Card>
             <p className="text-left px-2">Created by: {recipe.user.fullName}</p>
@@ -15,6 +23,7 @@ export const Recipe = ({ recipe }) => {
                 <strong>Instructions:</strong>
                 <p>{recipe.instruction}</p>
             </CardBody>
+            <Button onClick={editClick}>Edit Recipe</Button>
         </Card>
     )
 }

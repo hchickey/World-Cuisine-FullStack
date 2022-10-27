@@ -23,6 +23,18 @@ namespace World_Cuisine.Controllers
             return Ok(recipes);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var recipe = _recipeRepo.GetRecipeById(id);
+            if(recipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(recipe);
+        }
+
         [HttpPost]
         public IActionResult Recipe(Recipe recipe)
         {
@@ -34,6 +46,18 @@ namespace World_Cuisine.Controllers
 
             _recipeRepo.AddRecipe(recipe);
 
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Recipe recipe)
+        {
+            if(id != recipe.Id)
+            {
+                return BadRequest();
+            }
+
+            _recipeRepo.UpdateRecipe(recipe);
             return NoContent();
         }
     }

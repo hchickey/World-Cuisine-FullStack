@@ -31,3 +31,18 @@ export const addRecipe = (recipe) => {
         body: JSON.stringify(recipe),
     });
 };
+
+export const UpdateRecipe = (recipe) => {
+    return fetch(baseUrl + `/${recipe.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipe),
+    });
+};
+
+export const getRecipeById = (recipeId) => {
+    return fetch(baseUrl + `/${recipeId}`)
+        .then((resp) => resp.json())
+};

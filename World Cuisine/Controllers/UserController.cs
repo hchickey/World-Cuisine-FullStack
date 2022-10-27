@@ -26,18 +26,24 @@ namespace World_Cuisine.Controllers
         [HttpGet("DoesUserExist/{firebaseUserId}")]
         public IActionResult DoesUserExist(string firebaseUserId)
         {
-            var user = _userRepository.GetByFirebaseUserId(firebaseUserId);
-            if(user == null)
+            var userUser = _userRepository.GetByFirebaseUserId(firebaseUserId);
+            if(userUser == null)
             {
                 return NotFound();
             }
             return Ok();
         }
 
-        private User GetCurrentUser()
+        [HttpPost]
+        public IActionResult Post(User user)
         {
-            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _userRepository.GetByFirebaseUserId(firebaseUserId);
+            _userRepository.Add(user);
+            return CreatedAtAction(
+                nameof(GetUser),
+                new { firebaseUserId = user.FirebaseUserId},
+                user);
         }
+
+        
     }
 }

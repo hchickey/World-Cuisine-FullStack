@@ -44,7 +44,7 @@ export const Header = ({ isLoggedIn }) => {
                                 </NavItem>
                             </>
                         }
-                        {!isLoggedIn &&
+                        {!isLoggedIn && (
                             <>
                                 <NavItem>
                                     <NavLink tag={RRNavLink} to="/login">Login</NavLink>
@@ -53,10 +53,10 @@ export const Header = ({ isLoggedIn }) => {
                                     <NavLink tag={RRNavLink} to="/register">Register</NavLink>
                                 </NavItem>
                             </>
-                        }
+                        )}
                     </Nav>
                 </Collapse>
             </Navbar>
         </div>
-    )
+    );
 }

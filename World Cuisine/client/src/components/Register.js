@@ -17,13 +17,14 @@ export const Register = () => {
         if (password && password !== confirmPassword) {
             alert("Passwords don't match. Do better.");
         } else {
-            const user = {
+            const userUser = {
                 firstName,
                 lastName,
                 email,
             };
-            register(user, password).then(() => navigate("/"));
+            register(userUser, password).then(() => navigate("/"));
         }
+
     };
 
     return (

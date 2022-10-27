@@ -40,5 +40,27 @@ namespace World_Cuisine.Repositories
                 }
             }
         }
+
+        public void Add(User user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO [User] (FirebaseUserId, FirstName, LastName,
+                                        Email)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@FirebaseUserId, @FirstName, @LastName, @Email)";
+
+                    cmd.Parameters.AddWithValue("@FirebaseUserId", user.FirebaseUserId);
+                    cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+
+                    user.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }
