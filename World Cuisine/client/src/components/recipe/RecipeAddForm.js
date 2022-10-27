@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { addRecipe, getAllRecipes } from "../modules/recipeManager";
+import { addRecipe, getAllRecipes } from "../../modules/recipeManager";
 import { useNavigate } from "react-router-dom";
 
 export const RecipeAddForm = () => {

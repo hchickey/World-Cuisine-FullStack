@@ -5,25 +5,19 @@ export const Recipe = ({ recipe }) => {
 
     const navigate = useNavigate()
 
-    const editClick = (e) => {
+    const detailClick = (e) => {
         e.preventDefault()
-        navigate(`/recipe/edit/${recipe.id}`)
+        navigate(`/recipe/${recipe.id}`)
     }
 
     return (
         <Card>
             <p className="text-left px-2">Created by: {recipe.user.fullName}</p>
             <CardBody>
-                <strong>{recipe.name}</strong>
+                <h2><strong>{recipe.name}</strong></h2>
                 <p>{recipe.description}</p>
-                <br />
-                <strong>Ingredients:</strong>
-                <p>{recipe.ingredient}</p>
-                <br />
-                <strong>Instructions:</strong>
-                <p>{recipe.instruction}</p>
             </CardBody>
-            <Button onClick={editClick}>Edit Recipe</Button>
+            <Button onClick={detailClick}>Recipe Details</Button>
         </Card>
     )
 }
