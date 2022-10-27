@@ -64,12 +64,13 @@ namespace World_Cuisine.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            SELECT Id, Name, Description, ImageUrl, UserId,
-                            Ingredient, Instruction
-                            FROM Recipe
-                            WHERE Id = @id";
+                            SELECT r.Id AS RecipeId, r.Name, r.Description, r.ImageUrl, r.UserId,
+                            r.Ingredient, r.Instruction, u.FirstName, u.LastName, u.Id AS UserId, u.Email
+                            FROM Recipe r
+                            LEFT JOIN [User] u ON u.Id = r.UserId
+                            WHERE r.Id = @Id";
 
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@Id", id);
                     var reader = cmd.ExecuteReader();
 
                     Recipe recipe = null;
@@ -78,12 +79,19 @@ namespace World_Cuisine.Repositories
                     {
                         recipe = new Recipe()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Id = reader.GetInt32(reader.GetOrdinal("RecipeId")),
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             Description = reader.GetString(reader.GetOrdinal("Description")),
                             UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
                             Ingredient = reader.GetString(reader.GetOrdinal("Ingredient")),
-                            Instruction = reader.GetString(reader.GetOrdinal("Instruction"))
+                            Instruction = reader.GetString(reader.GetOrdinal("Instruction")),
+                            User = new User()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                Email = reader.GetString(reader.GetOrdinal("Email"))
+                            }
                         };
 
                         if (!reader.IsDBNull(reader.GetOrdinal("ImageUrl")))
@@ -140,7 +148,7 @@ namespace World_Cuisine.Repositories
                     cmd.Parameters.AddWithValue("@id", recipe.Id);
                     cmd.Parameters.AddWithValue("@Name", recipe.Name);
                     cmd.Parameters.AddWithValue("@Description", recipe.Description);
-                    cmd.Parameters.AddWithValue("@ImageUrl", recipe.ImageUrl);
+                    cmd.Parameters.AddWithValue("@ImageUrl", recipe.ImageUrl == null ? DBNull.Value : recipe.ImageUrl);
                     cmd.Parameters.AddWithValue("@Ingredient", recipe.Ingredient);
                     cmd.Parameters.AddWithValue("@Instruction", recipe.Instruction);
 

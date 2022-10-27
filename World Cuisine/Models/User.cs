@@ -13,7 +13,7 @@ namespace World_Cuisine.Models
         [Required]
         public string LastName { get; set; }
 
-        [StringLength(45, MinimumLength = 45)]
+        [StringLength(28, MinimumLength = 28)]
         public string FirebaseUserId { get; set; }
 
         [Required]

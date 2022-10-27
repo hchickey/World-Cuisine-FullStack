@@ -34,6 +34,16 @@ namespace World_Cuisine.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IActionResult Post(User user)
+        {
+            _userRepository.Add(user);
+            return CreatedAtAction(
+                nameof(GetUser),
+                new { firebaseUserId = user.FirebaseUserId},
+                user);
+        }
+
         
     }
 }

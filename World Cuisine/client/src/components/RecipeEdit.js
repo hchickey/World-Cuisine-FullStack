@@ -7,34 +7,45 @@ import { Form, FormGroup, Label, Input } from "reactstrap"
 
 export const RecipeEdit = () => {
     const { recipeId } = useParams()
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [currentRecipe, setCurrentRecipe] = useState({});
     const [updatedRecipe, setUpdatedRecipe] = useState({
         id: recipeId,
-        Name: "",
-        Description: "",
-        ImageUrl: "",
-        Ingredient: "",
-        Instruction: ""
+        name: "",
+        description: "",
+        imageUrl: "",
+        ingredient: "",
+        instruction: ""
     })
 
     const getCurrentRecipe = () => {
         getRecipeById(recipeId)
-            .then((recipe) => {
-                setCurrentRecipe(recipe)
-            })
+            .then((recipe) => setUpdatedRecipe(recipe))
     }
 
     useEffect(() => {
         getCurrentRecipe()
     }, [])
 
-    const handleEditButtonClick = (event) => {
-        event.preventDefault();
-        UpdateRecipe(updatedRecipe)
+    const handleEditButtonClick = (recipe) => {
+
+
+        if (updatedRecipe.imageUrl === "") {
+            updatedRecipe.imageUrl = null
+        }
+
+        // const recipeToSend = {
+        //     Id: updatedRecipe.Id,
+        //     Name: updatedRecipe.Name,
+        //     Description: updatedRecipe.Description,
+        //     ImageUrl: updatedRecipe.ImageUrl,
+        //     Ingredient: updatedRecipe.Ingredient,
+        //     Instruction: updatedRecipe.Instruction
+        // }
+
+        UpdateRecipe(recipe)
             .then(() => {
-                navigate("/recipe")
+                navigate(`/recipe`)
             })
     }
 
@@ -49,7 +60,7 @@ export const RecipeEdit = () => {
                     onChange={
                         (evt) => {
                             let copy = { ...updatedRecipe }
-                            copy.Name = evt.target.value
+                            copy.name = evt.target.value
                             setUpdatedRecipe(copy)
                         }
                     } />
@@ -59,10 +70,10 @@ export const RecipeEdit = () => {
                 <Input
                     id="description"
                     type="text"
-                    placeholder={currentRecipe.description}
+                    value={updatedRecipe.description}
                     onChange={(evt) => {
                         let copy = { ...updatedRecipe }
-                        copy.Description = evt.target.value
+                        copy.description = evt.target.value
                         setUpdatedRecipe(copy)
                     }} />
             </FormGroup>
@@ -71,10 +82,10 @@ export const RecipeEdit = () => {
                 <Input
                     id="imageUrl"
                     type="text"
-                    placeholder={currentRecipe.imageUrl}
+                    value={updatedRecipe.imageUrl}
                     onChange={(evt) => {
                         let copy = { ...updatedRecipe }
-                        copy.ImageUrl = evt.target.value
+                        copy.imageUrl = evt.target.value
                         setUpdatedRecipe(copy)
                     }} />
             </FormGroup>
@@ -83,10 +94,10 @@ export const RecipeEdit = () => {
                 <Input
                     id="ingredient"
                     type="textarea"
-                    placeholder={currentRecipe.ingredient}
+                    value={updatedRecipe.ingredient}
                     onChange={(evt) => {
                         let copy = { ...updatedRecipe }
-                        copy.Ingredient = evt.target.value
+                        copy.ingredient = evt.target.value
                         setUpdatedRecipe(copy)
                     }} />
             </FormGroup>
@@ -95,15 +106,15 @@ export const RecipeEdit = () => {
                 <Input
                     id="instruction"
                     type="textarea"
-                    placeholder={currentRecipe.instruction}
+                    value={updatedRecipe.instruction}
                     onChange={(evt) => {
                         let copy = { ...updatedRecipe }
-                        copy.Instruction = evt.target.value
+                        copy.instruction = evt.target.value
                         setUpdatedRecipe(copy)
                     }} />
             </FormGroup>
 
-            <Button className="btn btn-primary" onClick={(clickEvent) => handleEditButtonClick(clickEvent)}>Save</Button>
+            <Button className="btn btn-primary" onClick={() => handleEditButtonClick(updatedRecipe)}>Save</Button>
             <Button className="btn btn-primary" onClick={() => { navigate("/recipe") }}>Cancel</Button>
         </Form>
     )
