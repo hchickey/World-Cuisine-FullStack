@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { Button } from "reactstrap"
-import { getRecipeById, UpdateRecipe } from "../modules/recipeManager"
+import { getRecipeById, UpdateRecipe } from "../../modules/recipeManager"
 import { Form, FormGroup, Label, Input } from "reactstrap"
 
 

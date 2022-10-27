@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import { getAllRecipes } from "../modules/recipeManager";
+import { getAllRecipes } from "../../modules/recipeManager";
 import { Recipe } from "./Recipe";
 
 
