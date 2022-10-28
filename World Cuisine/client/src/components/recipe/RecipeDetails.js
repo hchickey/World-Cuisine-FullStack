@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
-import { Button, Card, CardBody } from "reactstrap";
-import { getRecipeById } from "../../modules/recipeManager";
+import { Button, Card, CardBody, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { deleteRecipe, getRecipeById } from "../../modules/recipeManager";
 
 
 
@@ -10,9 +10,17 @@ export const RecipeDetails = () => {
     const { recipeId } = useParams();
     const [detail, setDetail] = useState({});
 
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
+
     const getDetails = (id) => {
         getRecipeById(id).then((recipe) => {
-            setDetail(recipe);
+            setDetail({
+                id: recipe.id,
+                name: recipe.name,
+                ingredient: recipe.ingredient,
+                instruction: recipe.instruction
+            });
         });
     };
 
@@ -23,6 +31,10 @@ export const RecipeDetails = () => {
     const editClick = (e) => {
         e.preventDefault()
         navigate(`/recipe/edit/${detail.id}`)
+    }
+
+    const deleteButton = (id, nav) => {
+        deleteRecipe(id).then(() => nav("/recipe"));
     }
 
     return (
@@ -42,6 +54,27 @@ export const RecipeDetails = () => {
                 </div>
             </CardBody>
             <Button onClick={editClick}>Edit Recipe</Button>
+            <button onClick={toggle}>
+                Delete Recipe
+            </button>
+            <Modal isOpen={modal} toggle={toggle} {...detail}>
+                <ModalHeader toggle={toggle}>Delete Recipe</ModalHeader>
+                <ModalBody>
+                    <>
+                        <section>
+                            <div>{detail.name}</div>
+                        </section>
+                    </>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={toggle}>
+                        CANCEL
+                    </Button>
+                    <Button color="secondary" onClick={() => { deleteButton(detail.id, navigate) }}>
+                        CONFIRM
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </Card>
     )
 }

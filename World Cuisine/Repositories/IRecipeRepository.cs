@@ -9,5 +9,6 @@ namespace World_Cuisine.Repositories
         Recipe GetRecipeById(int id);
         void AddRecipe(Recipe recipe);
         void UpdateRecipe(Recipe recipe);
+        void DeleteRecipe(int id);
     }
 }
