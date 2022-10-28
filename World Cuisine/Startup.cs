@@ -24,6 +24,7 @@ namespace World_Cuisine
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRecipeRepository, RecipeRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";

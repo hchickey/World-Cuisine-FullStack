@@ -10,5 +10,6 @@ namespace World_Cuisine.Repositories
         void AddRecipe(Recipe recipe);
         void UpdateRecipe(Recipe recipe);
         void DeleteRecipe(int id);
+        List<Recipe> GetAllWithCountries();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace World_Cuisine.Models
+﻿using System.Collections.Generic;
+
+namespace World_Cuisine.Models
 {
     public class Recipe
     {
@@ -10,5 +12,6 @@
         public string Ingredient { get; set; }
         public string Instruction { get; set; }
         public User User { get; set; }
+        public List<CountryRecipe> Countries { get; set; }
     }
 }

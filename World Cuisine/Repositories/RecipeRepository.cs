@@ -3,6 +3,7 @@ using World_Cuisine.Models;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace World_Cuisine.Repositories
 {
@@ -167,6 +168,76 @@ namespace World_Cuisine.Repositories
                     cmd.CommandText = @"DELETE FROM Recipe WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Recipe> GetAllWithCountries()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT r.Id AS RecipeId, r.Name, r.Description, r.ImageUrl, r.Ingredient, r.Instruction,
+                              r.UserId, c.Id AS CountryId, c.Name AS CountryName, cr.Id AS CountryRecipeId,
+                              cr.RecipeId AS RecipeCId, cr.CountryId AS CountryCId,
+                              u.FirstName, u.LastName, u.Email ,u.Id AS UserId
+
+                        FROM Recipe r
+                        LEFT JOIN [User] u ON u.Id = r.UserId
+                        LEFT JOIN CountryRecipe cr ON cr.RecipeId = r.Id
+                        LEFT JOIN Country c ON c.Id = cr.CountryId
+                        ORDER BY c.Name";
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var recipes = new List<Recipe>();
+                        while(reader.Read())
+                        {
+                            var recipeId = reader.GetInt32(reader.GetOrdinal("RecipeId"));
+
+                            var existingRecipe = recipes.FirstOrDefault(p => p.Id == recipeId);
+                            if(existingRecipe == null)
+                            {
+                                existingRecipe = new Recipe()
+                                {
+                                    Id = recipeId,
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                    Description = reader.GetString(reader.GetOrdinal("Description")),
+                                    UserId = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                    Ingredient = reader.GetString(reader.GetOrdinal("Ingredient")),
+                                    Instruction = reader.GetString(reader.GetOrdinal("Instruction")),
+                                    Countries = new List<CountryRecipe>(),
+                                    User = new User()
+                                    {
+                                        Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                        FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                        LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                        Email = reader.GetString(reader.GetOrdinal("Email"))
+                                    }
+                                };
+                                recipes.Add(existingRecipe);
+                            }
+
+                            if(!reader.IsDBNull(reader.GetOrdinal("CountryRecipeId")))
+                            {
+                                existingRecipe.Countries.Add(new CountryRecipe()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CountryRecipeId")),
+                                    RecipeId = reader.GetInt32(reader.GetOrdinal("RecipeCId")),
+                                    CountryId = reader.GetInt32(reader.GetOrdinal("CountryCId")),
+                                    Country = new Country()
+                                    {
+                                        Id = reader.GetInt32(reader.GetOrdinal("CountryId")),
+                                        Name = reader.GetString(reader.GetOrdinal("CountryName"))
+                                    }
+                                });
+                            }
+                        }
+                        return recipes;
+                    }
                 }
             }
         }

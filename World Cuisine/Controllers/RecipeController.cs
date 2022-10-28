@@ -36,7 +36,7 @@ namespace World_Cuisine.Controllers
         }
 
         [HttpPost]
-        public IActionResult Recipe(Recipe recipe)
+        public IActionResult Post(Recipe recipe)
         {
 
             if(string.IsNullOrWhiteSpace(recipe.ImageUrl))
@@ -46,7 +46,7 @@ namespace World_Cuisine.Controllers
 
             _recipeRepo.AddRecipe(recipe);
 
-            return NoContent();
+            return CreatedAtAction("Get", new { id = recipe.Id }, recipe);
         }
 
         [HttpPut("{id}")]
@@ -66,6 +66,13 @@ namespace World_Cuisine.Controllers
         {
             _recipeRepo.DeleteRecipe(id);
             return NoContent();
+        }
+
+        [HttpGet("GetWithCountries")]
+        public IActionResult GetWithCountries()
+        {
+            var recipes = _recipeRepo.GetAllWithCountries();
+            return Ok(recipes);
         }
     }
 }
