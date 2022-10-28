@@ -60,5 +60,12 @@ namespace World_Cuisine.Controllers
             _recipeRepo.UpdateRecipe(recipe);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _recipeRepo.DeleteRecipe(id);
+            return NoContent();
+        }
     }
 }

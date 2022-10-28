@@ -46,3 +46,9 @@ export const getRecipeById = (recipeId) => {
     return fetch(baseUrl + `/${recipeId}`)
         .then((resp) => resp.json())
 };
+
+export const deleteRecipe = (recipeId) => {
+    return fetch(baseUrl + `/${recipeId}`, {
+        method: "DELETE"
+    });
+};
