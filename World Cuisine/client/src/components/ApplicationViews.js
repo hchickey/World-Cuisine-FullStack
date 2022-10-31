@@ -19,7 +19,7 @@ export const ApplicationViews = ({ isLoggedIn }) => {
                         path="recipe" element={isLoggedIn ? <RecipeList /> : <Navigate to="/login" />} />
                     <Route
                         path="recipe/:recipeId" element={isLoggedIn ? <RecipeDetails /> : <Navigate to="/login" />} />
-                    <Route path="recipe/add" element={<RecipeAddForm />} />
+                    <Route path="recipe/add" element={isLoggedIn ? <RecipeAddForm /> : <Navigate to="/login" />} />
                     <Route path="recipe/edit/:recipeId" element={<RecipeEdit />} />
                     <Route path="*" element={<p>Whoops, nothing here...</p>} />
                 </Route>

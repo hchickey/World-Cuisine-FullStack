@@ -13,5 +13,6 @@ namespace World_Cuisine.Models
         public string Instruction { get; set; }
         public User User { get; set; }
         public List<CountryRecipe> Countries { get; set; }
+        public int Country { get; set;  }
     }
 }

@@ -111,6 +111,7 @@ namespace World_Cuisine.Repositories
         {
             using (var conn = Connection)
             {
+                
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
@@ -118,6 +119,9 @@ namespace World_Cuisine.Repositories
                             INSERT INTO Recipe (Name, Description, ImageUrl, UserId, Ingredient, Instruction)
                             OUTPUT INSERTED.ID
                             VALUES (@Name, @Description, @ImageUrl, @UserId, @Ingredient, @Instruction)";
+
+
+
                     cmd.Parameters.AddWithValue("@Name", recipe.Name);
                     cmd.Parameters.AddWithValue("@Description", recipe.Description);
                     cmd.Parameters.AddWithValue("@ImageUrl", recipe.ImageUrl == null ? DBNull.Value : recipe.ImageUrl);
@@ -125,7 +129,32 @@ namespace World_Cuisine.Repositories
                     cmd.Parameters.AddWithValue("@Ingredient", recipe.Ingredient);
                     cmd.Parameters.AddWithValue("@Instruction", recipe.Instruction);
 
+                   
                     recipe.Id = (int)cmd.ExecuteScalar();
+
+                    AddCountryRecipe(recipe);
+
+
+                }
+
+               
+            }
+        }
+
+        private void AddCountryRecipe(Recipe recipe)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO CountryRecipe (CountryId, RecipeId)
+                            VALUES (@CountryId, @RecipeId)";
+
+                    cmd.Parameters.AddWithValue("@CountryId", recipe.Country);
+                    cmd.Parameters.AddWithValue("@RecipeId", recipe.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

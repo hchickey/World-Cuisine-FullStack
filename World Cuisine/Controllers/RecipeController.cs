@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using World_Cuisine.Models;
@@ -49,7 +50,8 @@ namespace World_Cuisine.Controllers
             return CreatedAtAction("Get", new { id = recipe.Id }, recipe);
         }
 
-        [HttpPut("{id}")]
+        [Authorize]
+        [HttpPut("auth/{id}")]
         public IActionResult Put(int id, Recipe recipe)
         {
             if(id != recipe.Id)

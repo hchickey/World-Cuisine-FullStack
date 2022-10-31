@@ -9,13 +9,13 @@ export const RecipeAddForm = () => {
     const navigate = useNavigate();
 
     const emptyRecipe = {
-        Name: "",
-        Description: "",
-        ImageUrl: "",
-        UserId: 0,
-        Ingredient: "",
-        Instruction: "",
-        Countries: 0
+        name: "",
+        description: "",
+        imageUrl: "",
+        userId: 0,
+        ingredient: "",
+        instruction: "",
+
     };
 
     const [recipe, setRecipe] = useState(emptyRecipe);
@@ -32,18 +32,15 @@ export const RecipeAddForm = () => {
     const handleCreateButtonClick = (e) => {
         e.preventDefault()
 
-        const countryToSend = {
-            Name: recipe.Countries.Name
-        }
 
         const recipeToSendToApi = {
-            Name: recipe.Name,
-            Description: recipe.Description,
-            ImageUrl: recipe.ImageUrl,
-            UserId: recipe.UserId,
-            Ingredient: recipe.Ingredient,
-            Instruction: recipe.Instruction,
-            Countries: recipe.Countries
+            name: recipe.name,
+            description: recipe.description,
+            imageUrl: recipe.imageUrl,
+            userId: recipe.userId,
+            ingredient: recipe.ingredient,
+            instruction: recipe.instruction,
+            country: recipe.countries
         }
 
         return addRecipe(recipeToSendToApi)
@@ -60,7 +57,7 @@ export const RecipeAddForm = () => {
                     type="text"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.Name = evt.target.value
+                        copy.name = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -71,7 +68,7 @@ export const RecipeAddForm = () => {
                     type="text"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.Description = evt.target.value
+                        copy.description = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -82,7 +79,7 @@ export const RecipeAddForm = () => {
                     type="text"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.ImageUrl = evt.target.value
+                        copy.imageUrl = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -93,7 +90,7 @@ export const RecipeAddForm = () => {
                     type="number"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.UserId = evt.target.value
+                        copy.userId = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -104,7 +101,7 @@ export const RecipeAddForm = () => {
                     type="textarea"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.Ingredient = evt.target.value
+                        copy.ingredient = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -115,7 +112,7 @@ export const RecipeAddForm = () => {
                     type="textarea"
                     onChange={(evt) => {
                         let copy = { ...recipe }
-                        copy.Instruction = evt.target.value
+                        copy.instruction = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -125,7 +122,7 @@ export const RecipeAddForm = () => {
                     onChange={
                         (event) => {
                             const copy = { ...recipe }
-                            copy.Countries = event.target.value
+                            copy.countries = event.target.value
                             setRecipe(copy)
                         }
                     }>
