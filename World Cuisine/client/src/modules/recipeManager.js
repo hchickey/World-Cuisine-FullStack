@@ -52,3 +52,10 @@ export const deleteRecipe = (recipeId) => {
         method: "DELETE"
     });
 };
+
+const baseUrlTwo = `/api/recipe/getWithCountries`;
+
+export const getAllRecipesWithCountries = () => {
+    return fetch(baseUrlTwo)
+        .then((res) => res.json())
+};

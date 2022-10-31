@@ -5,6 +5,16 @@ export const Recipe = ({ recipe }) => {
 
     const navigate = useNavigate()
 
+    const Countries = () => {
+        return <ul>
+            {
+                recipe?.countries?.map((country) => {
+                    return <li key={country?.id}>{country?.country?.name}</li>
+                })
+            }
+        </ul>
+    }
+
     const detailClick = (e) => {
         e.preventDefault()
         navigate(`/recipe/${recipe.id}`)
@@ -16,6 +26,7 @@ export const Recipe = ({ recipe }) => {
             <CardBody>
                 <h2><strong>{recipe.name}</strong></h2>
                 <p>{recipe.description}</p>
+                <div>Countries associated with Recipe: {Countries()}</div>
             </CardBody>
             <Button onClick={detailClick}>Recipe Details</Button>
         </Card>

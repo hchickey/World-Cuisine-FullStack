@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
-import { getAllRecipes } from "../../modules/recipeManager";
+import { getAllRecipesWithCountries } from "../../modules/recipeManager";
 import { Recipe } from "./Recipe";
 
 
@@ -10,7 +10,7 @@ export const RecipeList = () => {
     const navigate = useNavigate();
 
     const getRecipes = () => {
-        getAllRecipes().then(recipes => setRecipes(recipes));
+        getAllRecipesWithCountries().then(recipes => setRecipes(recipes));
     }
 
     const handleClick = (e) => {
