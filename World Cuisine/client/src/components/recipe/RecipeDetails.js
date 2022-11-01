@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { getCurrentUser } from "../../modules/authManager";
 import { deleteRecipe, getRecipeById } from "../../modules/recipeManager";
 
 
@@ -9,6 +10,7 @@ export const RecipeDetails = () => {
     const navigate = useNavigate();
     const { recipeId } = useParams();
     const [detail, setDetail] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -19,7 +21,8 @@ export const RecipeDetails = () => {
                 id: recipe.id,
                 name: recipe.name,
                 ingredient: recipe.ingredient,
-                instruction: recipe.instruction
+                instruction: recipe.instruction,
+                userId: recipe.userId
             });
         });
     };
@@ -28,6 +31,7 @@ export const RecipeDetails = () => {
         getDetails(recipeId);
     }, []);
 
+
     const editClick = (e) => {
         e.preventDefault()
         navigate(`/recipe/edit/${detail.id}`)
@@ -35,6 +39,34 @@ export const RecipeDetails = () => {
 
     const deleteButton = (id, nav) => {
         deleteRecipe(id).then(() => nav("/recipe"));
+    }
+
+    useEffect(() => {
+        getCurrentUser()
+            .then((user) => {
+                setCurrentUser(user)
+            })
+    }, [])
+
+    const updateButton = () => {
+
+        if (currentUser.id === detail.userId) {
+            return <Button onClick={editClick}>Edit Recipe</Button>
+        }
+        else {
+            return ""
+        }
+    }
+
+    const authDeleteButton = () => {
+        if (currentUser.id === detail.userId) {
+            return <button onClick={toggle}>
+                Delete Recipe
+            </button>
+        }
+        else {
+            return ""
+        }
     }
 
     return (
@@ -53,10 +85,8 @@ export const RecipeDetails = () => {
                     </div>
                 </div>
             </CardBody>
-            <Button onClick={editClick}>Edit Recipe</Button>
-            <button onClick={toggle}>
-                Delete Recipe
-            </button>
+            <div>{updateButton()}</div>
+            <div>{authDeleteButton()}</div>
             <Modal isOpen={modal} toggle={toggle} {...detail}>
                 <ModalHeader toggle={toggle}>Delete Recipe</ModalHeader>
                 <ModalBody>

@@ -27,11 +27,13 @@ export const RecipeEdit = () => {
         getCurrentRecipe()
     }, [])
 
-    const handleEditButtonClick = (recipe) => {
+    const handleEditButtonClick = () => {
+
+        const copyUdateRecipe = { ...updatedRecipe }
 
 
-        if (updatedRecipe.imageUrl === "") {
-            updatedRecipe.imageUrl = null
+        if (copyUdateRecipe.imageUrl === "") {
+            copyUdateRecipe.imageUrl = null
         }
 
         // const recipeToSend = {
@@ -43,7 +45,7 @@ export const RecipeEdit = () => {
         //     Instruction: updatedRecipe.Instruction
         // }
 
-        UpdateRecipe(recipe)
+        UpdateRecipe(copyUdateRecipe)
             .then(() => {
                 navigate(`/recipe`)
             })
@@ -82,7 +84,7 @@ export const RecipeEdit = () => {
                 <Input
                     id="imageUrl"
                     type="text"
-                    value={updatedRecipe.imageUrl}
+                    value={updatedRecipe.imageUrl || ""}
                     onChange={(evt) => {
                         let copy = { ...updatedRecipe }
                         copy.imageUrl = evt.target.value
@@ -114,7 +116,7 @@ export const RecipeEdit = () => {
                     }} />
             </FormGroup>
 
-            <Button className="btn btn-primary" onClick={() => handleEditButtonClick(updatedRecipe)}>Save</Button>
+            <Button className="btn btn-primary" onClick={handleEditButtonClick}>Save</Button>
             <Button className="btn btn-primary" onClick={() => { navigate("/recipe") }}>Cancel</Button>
         </Form>
     )

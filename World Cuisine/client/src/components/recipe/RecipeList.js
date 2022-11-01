@@ -28,7 +28,8 @@ export const RecipeList = () => {
             <div className="container">
                 <div className="row justify-content-center">
                     {recipes.map((recipe) => (
-                        <Recipe recipe={recipe} key={recipe.id} />
+                        <Recipe recipe={recipe} key={recipe.id}
+                        />
                     ))}
                 </div>
             </div>

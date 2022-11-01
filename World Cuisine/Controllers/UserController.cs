@@ -34,6 +34,14 @@ namespace World_Cuisine.Controllers
             return Ok();
         }
 
+        [HttpGet("GetCurrentUser")]
+        public IActionResult GetCurrentUser()
+        {
+            var currentUser = GetCurrentUserProfile();
+            return Ok(currentUser);
+        }
+
+
         [HttpPost]
         public IActionResult Post(User user)
         {
@@ -43,6 +51,13 @@ namespace World_Cuisine.Controllers
                 new { firebaseUserId = user.FirebaseUserId},
                 user);
         }
+
+        private User GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepository.GetByFirebaseUserId(firebaseUserId);
+        }
+       
 
         
     }
