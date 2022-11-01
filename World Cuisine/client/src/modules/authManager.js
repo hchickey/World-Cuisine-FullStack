@@ -60,3 +60,13 @@ export const onLoginStatusChange = (onLoginStatusChangeHandler) => {
         onLoginStatusChangeHandler(!!user);
     })
 };
+
+export const getCurrentUser = () => {
+    return getToken().then((token) =>
+        fetch(`${_apiUrl}/GetCurrentUser`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(resp => resp.json()))
+};

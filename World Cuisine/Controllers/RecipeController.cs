@@ -12,9 +12,11 @@ namespace World_Cuisine.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepo;
+        
         public RecipeController(IRecipeRepository recipeRepo)
         {
             _recipeRepo = recipeRepo;
+            
         }
 
         [HttpGet]
@@ -51,7 +53,7 @@ namespace World_Cuisine.Controllers
         }
 
         [Authorize]
-        [HttpPut("auth/{id}")]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, Recipe recipe)
         {
             if(id != recipe.Id)
@@ -62,6 +64,7 @@ namespace World_Cuisine.Controllers
             _recipeRepo.UpdateRecipe(recipe);
             return NoContent();
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

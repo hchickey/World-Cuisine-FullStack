@@ -62,5 +62,36 @@ namespace World_Cuisine.Repositories
                 }
             }
         }
+
+        public User GetById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, FirstName, LastName, Email
+                                FROM [User]
+                                WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        User user = null;
+                        if(reader.Read())
+                        {
+                            user = new User()
+                            {
+                                Id = id,
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                Email = reader.GetString(reader.GetOrdinal("Email")),
+                            };
+                        }
+                        return user;
+                    }
+                }
+            }
+        }
     }
 }
