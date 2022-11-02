@@ -28,6 +28,13 @@ export const RecipeDetails = () => {
     };
 
     useEffect(() => {
+        getCurrentUser()
+            .then((user) => {
+                setCurrentUser(user)
+            })
+    }, [])
+
+    useEffect(() => {
         getDetails(recipeId);
     }, []);
 
@@ -41,31 +48,25 @@ export const RecipeDetails = () => {
         deleteRecipe(id).then(() => nav("/recipe"));
     }
 
-    useEffect(() => {
-        getCurrentUser()
-            .then((user) => {
-                setCurrentUser(user)
-            })
-    }, [])
 
     const updateButton = () => {
 
-        if (currentUser.id === detail.userId) {
-            return <Button onClick={editClick}>Edit Recipe</Button>
+        if (currentUser.id !== detail.userId) {
+            return ""
         }
         else {
-            return ""
+            return <Button onClick={editClick}>Edit Recipe</Button>
         }
     }
 
     const authDeleteButton = () => {
-        if (currentUser.id === detail.userId) {
+        if (currentUser.id !== detail.userId) {
+            return ""
+        }
+        else {
             return <button onClick={toggle}>
                 Delete Recipe
             </button>
-        }
-        else {
-            return ""
         }
     }
 
@@ -83,11 +84,14 @@ export const RecipeDetails = () => {
                         <strong>Instructions:</strong>
                         <p>{detail.instruction}</p>
                     </div>
+                    <img className="shopska" alt="bulgaria" src="/recipe/shopska.jpg" />
                 </div>
+                {currentUser.id && detail.userId ? <>
+                    <div>{updateButton()}</div>
+                    <div>{authDeleteButton()}</div>
+                </> : ""}
             </CardBody>
-            <div>{updateButton()}</div>
-            <div>{authDeleteButton()}</div>
-            <Modal isOpen={modal} toggle={toggle} {...detail}>
+            <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Delete Recipe</ModalHeader>
                 <ModalBody>
                     <>

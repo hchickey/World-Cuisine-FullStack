@@ -1,0 +1,13 @@
+.home {
+    height: 1000px;
+    width: 100%;
+    text-align: center;
+}
+
+.header {
+    position: relative;
+    top: 80px;
+    font-size: 3rem;
+    color: black;
+    text-shadow: -1px 0 white, 0 2px white, 2px 0 white, 0 -1px white;
+}

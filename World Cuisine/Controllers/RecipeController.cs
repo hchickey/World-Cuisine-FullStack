@@ -41,6 +41,7 @@ namespace World_Cuisine.Controllers
         [HttpPost]
         public IActionResult Post(Recipe recipe)
         {
+            
 
             if(string.IsNullOrWhiteSpace(recipe.ImageUrl))
             {

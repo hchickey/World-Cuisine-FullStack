@@ -36,14 +36,6 @@ export const RecipeEdit = () => {
             copyUdateRecipe.imageUrl = null
         }
 
-        // const recipeToSend = {
-        //     Id: updatedRecipe.Id,
-        //     Name: updatedRecipe.Name,
-        //     Description: updatedRecipe.Description,
-        //     ImageUrl: updatedRecipe.ImageUrl,
-        //     Ingredient: updatedRecipe.Ingredient,
-        //     Instruction: updatedRecipe.Instruction
-        // }
 
         UpdateRecipe(copyUdateRecipe)
             .then(() => {

@@ -10,7 +10,7 @@ export const RecipeList = () => {
     const navigate = useNavigate();
 
     const getRecipes = () => {
-        getAllRecipesWithCountries().then(recipes => setRecipes(recipes));
+        getAllRecipesWithCountries().then(setRecipes);
     }
 
     const handleClick = (e) => {
