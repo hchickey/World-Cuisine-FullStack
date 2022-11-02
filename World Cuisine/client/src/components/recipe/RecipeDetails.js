@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { getCurrentUser } from "../../modules/authManager";
 import { deleteRecipe, getRecipeById } from "../../modules/recipeManager";
-
+import "./details.css"
 
 
 export const RecipeDetails = () => {
@@ -22,6 +22,7 @@ export const RecipeDetails = () => {
                 name: recipe.name,
                 ingredient: recipe.ingredient,
                 instruction: recipe.instruction,
+                imageUrl: recipe.imageUrl,
                 userId: recipe.userId
             });
         });
@@ -64,31 +65,42 @@ export const RecipeDetails = () => {
             return ""
         }
         else {
-            return <button onClick={toggle}>
+            return <Button onClick={toggle}>
                 Delete Recipe
-            </button>
+            </Button>
         }
     }
 
+
     return (
         <Card className="m-4">
-            <h1>Recipe Details</h1>
+            <h1 className="recipeDetails">Recipe Details</h1>
             <CardBody>
                 <div className="container">
                     <div className="row justify-content-center">
-                        <h2>{detail.name}</h2>
+                        <h2 className="nameDetails">{detail.name}</h2>
                         <br />
-                        <strong>Ingredients:</strong>
-                        <p>{detail.ingredient}</p>
+                        <Card>
+                            <CardBody>
+                                <strong className="ingredient">Ingredients:</strong>
+                                <p className="ingredientDetails">{detail.ingredient}</p>
+                            </CardBody>
+                        </Card>
                         <br />
-                        <strong>Instructions:</strong>
-                        <p>{detail.instruction}</p>
+                        <Card>
+                            <CardBody>
+                                <strong className="instruction">Instructions:</strong>
+                                <p className="instructionDetails">{detail.instruction}</p>
+                            </CardBody>
+                        </Card>
+                        <br />
                     </div>
-                    <img className="shopska" alt="bulgaria" src="/recipe/shopska.jpg" />
+                    <br />
+                    <img className="recipeImage" alt="country" src={detail.imageUrl} />
                 </div>
                 {currentUser.id && detail.userId ? <>
-                    <div>{updateButton()}</div>
-                    <div>{authDeleteButton()}</div>
+                    <div className="editButton">{updateButton()}</div>
+                    <div className="deleteButton">{authDeleteButton()}</div>
                 </> : ""}
             </CardBody>
             <Modal isOpen={modal} toggle={toggle}>
