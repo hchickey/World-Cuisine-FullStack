@@ -3,16 +3,18 @@ import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { addRecipe, getAllRecipes } from "../../modules/recipeManager";
 import { useNavigate } from "react-router-dom";
 import { getAllCountries } from "../../modules/countryManager";
+import { getCurrentUser } from "../../modules/authManager";
 
 export const RecipeAddForm = () => {
 
     const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState({})
 
     const emptyRecipe = {
         name: "",
         description: "",
         imageUrl: "",
-        userId: 0,
+        userId: currentUser.id,
         ingredient: "",
         instruction: "",
 
@@ -20,6 +22,13 @@ export const RecipeAddForm = () => {
 
     const [recipe, setRecipe] = useState(emptyRecipe);
     const [countries, setCountry] = useState([]);
+
+    useEffect(() => {
+        getCurrentUser()
+            .then((user) => {
+                setCurrentUser(user)
+            })
+    }, [])
 
     const getCountries = () => {
         getAllCountries().then(countries => setCountry(countries));
@@ -32,21 +41,22 @@ export const RecipeAddForm = () => {
     const handleCreateButtonClick = (e) => {
         e.preventDefault()
 
-
+        //new recipe is created using values from the component's state.
         const recipeToSendToApi = {
             name: recipe.name,
             description: recipe.description,
             imageUrl: recipe.imageUrl,
-            userId: recipe.userId,
+            userId: currentUser.id,
             ingredient: recipe.ingredient,
             instruction: recipe.instruction,
             country: recipe.countries
         }
 
+
         return addRecipe(recipeToSendToApi)
-            .then(getAllRecipes())
-            .then(navigate("/recipe"))
+            .then(() => { navigate("/recipe") })
     }
+
 
     return (
         <Form>
@@ -80,17 +90,6 @@ export const RecipeAddForm = () => {
                     onChange={(evt) => {
                         let copy = { ...recipe }
                         copy.imageUrl = evt.target.value
-                        setRecipe(copy)
-                    }} />
-            </FormGroup>
-            <FormGroup>
-                <Label for="userId">User Id</Label>
-                <Input
-                    id="userId"
-                    type="number"
-                    onChange={(evt) => {
-                        let copy = { ...recipe }
-                        copy.userId = evt.target.value
                         setRecipe(copy)
                     }} />
             </FormGroup>
@@ -139,7 +138,7 @@ export const RecipeAddForm = () => {
                 </select>
             </FormGroup>
 
-            <Button className="btn btn-primary" onClick={(clickEvent) => { handleCreateButtonClick(clickEvent) }}>Submit</Button>
+            <Button className="btn btn-primary" onClick={handleCreateButtonClick}>Submit</Button>
 
         </Form>
     );
